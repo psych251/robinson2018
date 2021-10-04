@@ -1,0 +1,95 @@
+---
+title: "Reproducibility Report for Study X by Sample & Sample (20xx, Psychological Science)"
+author: "Reproducibility Project Author[s] (contact information)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+<!-- Reproducibility reports should all use this template to standardize reporting across projects. These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+## Introduction
+
+The study “Experimental Philosophy of Science and Philosophical Differences Across the Sciences” aimed to identify key philosophical beliefs held by practicing scientists across several disciplines. This included life sciences, physical and mathematical sciences, behavioral sciences, engineering, and medicine and health sciences. The study utilized data taken from Toolbox workshops which surveyed researchers about their attitudes towards different philosophical aspects of scientific conduct, such as the relationship between research value and applicability, core methodologies, evidentiary support for knowledge claims, the extent to which a finding represents a researcher’s personal view or the real world, reductionism of scientific mechanisms, and the positive or negative influence of values on scientific research. 
+
+The study found that there were interesting and notable differences with regards to the responses across these disciplines. A key interesting finding was that contrary to general belief, a difference in core philosophical values may be a bigger obstacle to interdisciplinary collaboration rather than difference in domain.
+
+
+### Justification for choice of study
+
+I chose this study because I am very interested in sociology and philosophy of science, and this study is a fascinating intersection of the two which uses experimental philosophy and data methods to empirically answer questions which are normally confined to case studies. Specifically, I am currently studying interdisciplinary collaboration across different specializations in physics, and replicating this study could give valuable perspective on the role of philosophical views in scientific collaboration at large. The study had readily-available data collected in a clear and organized way following traditional social science methods which are uniquely applied to this research question.
+
+### Anticipated challenges
+
+To conduct this experiment, I will be analyzing the Open Science Toolbox data that was uploaded alongside the study. I plan to follow their methods of using a Kruskal-Wallis rank sum test to align the philosophical values with the respondents’ areas of discipline and compare the results to respondents from other disciplines. A challenge I foresee is interpreting the data in the sheet and corresponding each respondent correctly to their discipline, as there was a wide range of specificity with regards to answers given (i.e. “biology” vs “fluvial geomorphology”). I also have not used a Kruskal-Wallis rank sum test before, so I will need to learn how to do it. 
+
+### Links
+
+Project repository (on Github): 
+https://github.com/psych251/robinson2018
+
+Original paper (as hosted in your repo): https://github.com/psych251/robinson2018/blob/main/original_paper/robinson_gonnerman_orourke_2018.pdf
+
+## Methods
+
+### Description of the steps required to reproduce the results
+
+Please describe all the steps necessary to reproduce the key result(s) of this study. 
+
+### Differences from original study
+
+Explicitly describe known differences in the analysis pipeline between the original paper and yours (e.g., computing environment). The goal, of course, is to minimize those differences, but differences may occur. Also, note whether such differences are anticipated to influence your ability to reproduce the original results.
+
+## Project Progress Check 1
+
+### Measure of success
+
+Please describe the outcome measure for the success or failure of your reproduction and how this outcome will be computed.
+
+
+### Pipeline progress
+
+Earlier in this report, you described the steps necessary to reproduce the key result(s) of this study. Please describe your progress on each of these steps (e.g., data preprocessing, model fitting, model evaluation).
+
+
+## Results
+
+### Data preparation
+
+Data preparation following the analysis plan.
+	
+```{r include=F}
+### Data Preparation
+
+#### Load Relevant Libraries and Functions
+
+#### Import data
+
+#### Data exclusion / filtering
+
+#### Prepare data for analysis - create columns etc.
+```
+
+### Key analysis
+
+The analyses as specified in the analysis plan.  
+
+*Side-by-side graph with original graph is ideal here*
+
+###Exploratory analyses
+
+Any follow-up analyses desired (not required).  
+
+## Discussion
+
+### Summary of Reproduction Attempt
+
+Open the discussion section with a paragraph summarizing the primary result from the key analysis and assess whether you successfully reproduced it, partially reproduced it, or failed to reproduce it.  
+
+### Commentary
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis of the dataset, (b) assessment of the meaning of the successful or unsuccessful reproducibility attempt - e.g., for a failure to reproduce the original findings, are the differences between original and present analyses ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the reproducibility attempt (if you contacted them).  None of these need to be long.
