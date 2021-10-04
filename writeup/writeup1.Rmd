@@ -1,6 +1,6 @@
 ---
-title: "Reproducibility Report for Study X by Sample & Sample (20xx, Psychological Science)"
-author: "Reproducibility Project Author[s] (contact information)"
+title: "Reproducibility Report for Experimental Philosophy of Science and Philosophical Differences Across the Sciences by Robinson, Gonnerman & O'Rourke (2018, Pshilosophy of Science)"
+author: "Ronnie Miller (nrmiller@stanford.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
