@@ -11,7 +11,7 @@
 
 <meta name="author" content="Ronnie Miller (nrmiller@stanford.edu)" />
 
-<meta name="date" content="2021-10-03" />
+<meta name="date" content="2021-10-17" />
 
 <title>Reproducibility Report for Experimental Philosophy of Science and Philosophical Differences Across the Sciences by Robinson, Gonnerman &amp; O’Rourke (2018, Pshilosophy of Science)</title>
 
@@ -273,7 +273,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Reproducibility Report for Experimental Philosophy of Science and Philosophical Differences Across the Sciences by Robinson, Gonnerman &amp; O’Rourke (2018, Pshilosophy of Science)</h1>
 <h4 class="author">Ronnie Miller (<a href="mailto:nrmiller@stanford.edu" class="email">nrmiller@stanford.edu</a>)</h4>
-<h4 class="date">October 03, 2021</h4>
+<h4 class="date">October 17, 2021</h4>
 
 </div>
 
@@ -301,11 +301,11 @@ div.tocify {
 <h2>Methods</h2>
 <div id="description-of-the-steps-required-to-reproduce-the-results" class="section level3">
 <h3>Description of the steps required to reproduce the results</h3>
-<p>Please describe all the steps necessary to reproduce the key result(s) of this study.</p>
+<p>First, I will need to categorize the respondents of the Scientific Toolbox Workshops in the dataset based on their answer for primary academic discipline based on the Digital Commons Three-Tiered Taxonomy of Academic Disciplines. Once the participants are categorized into the three categories upon which the original authors decided to focus (life sciences, physical sciences and mathematics, and social and behavioral sciences), I will run a Kruskall-Wallis test to compare philosophical attitudes for each of the 28 survey prompts across respondents of different disciplines. Once I have determined if there are significant differences as described in the paper, I will run a Mann-Whitney-Wilcoxon test to further determine where the differences reside. I will then compare my results to the results from the original study.</p>
 </div>
 <div id="differences-from-original-study" class="section level3">
 <h3>Differences from original study</h3>
-<p>Explicitly describe known differences in the analysis pipeline between the original paper and yours (e.g., computing environment). The goal, of course, is to minimize those differences, but differences may occur. Also, note whether such differences are anticipated to influence your ability to reproduce the original results.</p>
+<p>The Digital Commons Three-Tiered Taxonomy of Academic Disciplines was used to sort respondents into disciplinary identity. Two of the authors rated each respondent independently then compared their answers, and had differed on 54 out of 346 participants. As the original comparisons are not available in the data, there may be some difference between what I categorize a respondent and what each of the two authors who rated the participants did originally. This may result in minor differences, but overall should not change the final result of the replication.</p>
 </div>
 </div>
 <div id="project-progress-check-1" class="section level2">
@@ -323,11 +323,11 @@ div.tocify {
 <h2>Results</h2>
 <div id="data-preparation" class="section level3">
 <h3>Data preparation</h3>
-<p>Data preparation following the analysis plan.</p>
+<p>I am currently still in the process of receiving the full dataset from the authors of the study. The publicly available data includes 181 out of the 346 total responses and does not include the raw answers participants gave when asked about their primary scientific discipline. Once the dataset is complete, I will be able to use the guidelines specified in the Digital Commons Three-Tiered Taxonomy of Academic Disciplines to organize the respondents into categories. Then, I will use these determinations to conduct analysis and comparison of philosophical attitudes for each of the 28 prompts via the Kruskall-Wallis test.</p>
 </div>
 <div id="key-analysis" class="section level3">
 <h3>Key analysis</h3>
-<p>The analyses as specified in the analysis plan.</p>
+<p>As described above, the key analysis for this project will be a Kruskall-Wallis rank sum test for each of the Toolbox prompts. This is the test that was used in the original paper. This test examines the median scores on a five-point likert scale for each of the 28 survey prompts for each of the three scientific branches examined and compares them against each other to detect significant differences in philosophical attitudes regarding motivation, methodology, confirmation, reality, values, and reductionism. I will be using the Holm-Bonferroni method to assist in correction of the family-wise error rate often associated with multiple testing, since this increases the probability of type I errors.</p>
 <p><em>Side-by-side graph with original graph is ideal here</em></p>
 <p>###Exploratory analyses</p>
 <p>Any follow-up analyses desired (not required).</p>
