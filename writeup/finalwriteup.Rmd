@@ -1,0 +1,500 @@
+---
+title: Reproducibility Report for Experimental Philosophy of Science and Philosophical
+  Differences Across the Sciences by Robinson, Gonnerman & O'Rourke (2018, Pshilosophy
+  of Science)
+author: "Ronnie Miller (nrmiller@stanford.edu)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+<!-- Reproducibility reports should all use this template to standardize reporting across projects. These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+## Introduction
+
+The study “Experimental Philosophy of Science and Philosophical Differences Across the Sciences” aimed to identify key philosophical beliefs held by practicing scientists across several disciplines. This included life sciences, physical and mathematical sciences, behavioral sciences, engineering, and medicine and health sciences. The study utilized data taken from Toolbox workshops which surveyed researchers about their attitudes towards different philosophical aspects of scientific conduct, such as the relationship between research value and applicability, core methodologies, evidentiary support for knowledge claims, the extent to which a finding represents a researcher’s personal view or the real world, reductionism of scientific mechanisms, and the positive or negative influence of values on scientific research. 
+
+The study found that there were interesting and notable differences with regards to the responses across these disciplines. A key interesting finding was that contrary to general belief, a difference in core philosophical values may be a bigger obstacle to interdisciplinary collaboration rather than difference in domain.
+
+
+### Justification for choice of study
+
+I chose this study because I am very interested in sociology and philosophy of science, and this study is a fascinating intersection of the two which uses experimental philosophy and data methods to empirically answer questions which are normally confined to case studies. Specifically, I am currently studying interdisciplinary collaboration across different specializations in physics, and replicating this study could give valuable perspective on the role of philosophical views in scientific collaboration at large. The study had readily-available data collected in a clear and organized way following traditional social science methods which are uniquely applied to this research question.
+
+### Anticipated challenges
+
+To conduct this experiment, I will be analyzing the Open Science Toolbox data that was uploaded alongside the study. I plan to follow their methods of using a Kruskal-Wallis rank sum test to align the philosophical values with the respondents’ areas of discipline and compare the results to respondents from other disciplines. A challenge I foresee is interpreting the data in the sheet and corresponding each respondent correctly to their discipline, as there was a wide range of specificity with regards to answers given (i.e. “biology” vs “fluvial geomorphology”). I also have not used a Kruskal-Wallis rank sum test before, so I will need to learn how to do it. 
+
+### Links
+
+Project repository (on Github): 
+https://github.com/psych251/robinson2018
+
+Original paper (as hosted in your repo): https://github.com/psych251/robinson2018/blob/main/original_paper/robinson_gonnerman_orourke_2018.pdf
+
+## Methods
+
+### Description of the steps required to reproduce the results
+
+First, I will need to categorize the respondents of the Scientific Toolbox Workshops in the dataset based on their answer for primary academic discipline based on the Digital Commons Three-Tiered Taxonomy of Academic Disciplines. Once the participants are categorized into the three categories upon which the original authors decided to focus (life sciences, physical sciences and mathematics, and social and behavioral sciences), I will run a Kruskall-Wallis test to compare philosophical attitudes for each of the 28 survey prompts across respondents of different disciplines. Once I have determined if there are significant differences as described in the paper, I will run a Mann-Whitney-Wilcoxon test to further determine where the differences reside. I will then compare my results to the results from the original study.
+
+
+### Differences from original study
+
+The Digital Commons Three-Tiered Taxonomy of Academic Disciplines was used to sort respondents into disciplinary identity. Two of the authors rated each respondent independently then compared their answers, and had differed on 54 out of 346 participants. As the original comparisons are not available in the data, there may be some difference between what I categorize a respondent and what each of the two authors who rated the participants did originally. This may result in minor differences, but overall should not change the final result of the replication.
+
+Follow-up: After receiving the full dataset from the authors, I was able to discern which respondents had been rated differently. A key difference between my study and the original study is that there were 13 participants in which the two raters were unable to agree upon their academic taxonomy. The methodology I used was to employ myself as a third rater, comparing my answers to the 'Academic Family (resolved)' column in lieu of recruiting a second individual to rate the responses alongside me. This allowed me to be a tiebreaker vote, and thus I did not have to discard those responses. This may have resulted in several small numerical differences in the analyses, as further discussed below. However, it indeed did not change the final result of the study.
+
+## Project Progress Check 1
+
+### Measure of success
+
+One measure of success will be comparing the original graphs (bar chart visualizations comparing the means for statistically significant prompts across disciplines) with my own reproductions. Significant differences in philosophical attitude across disciplines were found on 9 of the 28 prompts. A successful reproduction would be to also find those prompts significant, through a Kruskall-Wallis test, and also to correctly identify where those differences reside via pair-wise testing, via a Mann-Whitney-Wilcoxon test.
+
+### Pipeline progress
+
+I was able to rate all 346 responses for academic disciplines. Fortunately, the data was already tidy, so all I had to do was remove NA responses as the original authors did in order to prepare my dataset. This resulted in a final number of 266 responses.
+
+## Results
+
+### Data preparation
+
+Previously: I am currently still in the process of receiving the full dataset from the authors of the study. The publicly available data includes 181 out of the 346 total responses and does not include the raw answers participants gave when asked about their primary scientific discipline. Once the dataset is complete, I will be able to use the guidelines specified in the Digital Commons Three-Tiered Taxonomy of Academic Disciplines to organize the respondents into categories. Then, I will use these determinations to conduct analysis and comparison of philosophical attitudes for each of the 28 prompts via the Kruskall-Wallis test. 
+
+Follow-up: After receiving the full dataset, I was able to complete the steps outlined in "Pipeline progress" above.
+
+
+### Key analysis
+
+As described above, the key analysis for this project will be graphs of the means for each of the prompts deemed significant and a Kruskall-Wallis rank sum test for each of the Toolbox prompts. This is the test that was used in the original paper. This test examines the median scores on a five-point likert scale for each of the 28 survey prompts for each of the three scientific branches examined and compares them against each other to detect significant differences in philosophical attitudes regarding motivation, methodology, confirmation, reality, values, and reductionism. I will be using the Holm-Bonferroni method to assist in correction of the family-wise error rate often associated with multiple testing, since this increases the probability of type I errors. 
+
+### My graphs
+
+While my numbers were slightly different, most likely due to the 13 additional responses in my reproduction, my graphs showed the same general shapes and relationships for every single prompt and all the disciplines as the visualizations in the original paper.
+
+```{r, message=FALSE, warning=FALSE, echo=TRUE}
+
+#Load in packages
+
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(ROCR)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(factoextra)
+library(GGally)
+library(shades)
+
+#Read in the data
+
+d <- read_excel("~/Desktop/school/finalproject251/Data-deidentified_rm.xlsx")
+data <- d %>% group_by(`Academic Family (resolved)`) %>% filter(`Academic Family (resolved)` == 'Life Sciences' | `Academic Family (resolved)` == 'Physical Sciences and Mathematics' | `Academic Family (resolved)` == 'Social and Behavioral Sciences')
+
+#Rename columns so that they are the same as in the original paper
+
+renamed <- data %>% rename(
+  `Motivation 1` = `01-M1_app`,
+  `Motivation 2` = `02-M2_XD`,
+  `Motivation 3`= `03-M3_basic`,
+  `Motivation 4` = `04-M4_imptce`,
+  `Motivation 5`= `05-M5_simview`,
+  `Methodology 1` = `06-Meth1_hypoth`,
+  `Methodology 2` = `07-Meth2_qt`,
+  `Methodology 3`= `08-Meth3_ql`,
+  `Methodology 4` = `09-Meth4_expt`,
+  `Methodology 5`= `10-Meth5_obs`,
+  `Methodology 6`= `11-Meth6_simview`,
+  `Confirmation 1` = `12-C1_validity`,
+  `Confirmation 2` = `13-C2_confirm`,
+  `Confirmation 3` = `14-C3_rep`,
+  `Confirmation 4` = `15-C4_unrep`,
+  `Confirmation 5` = `16-C5_uncert`,
+  `Confirmation 6` = `17-C6_simview`,
+  `Reality 1` = `18-Real1_facts`,
+  `Reality 2` = `19-Real2_useful`,
+  `Reality 3` = `20-Real3_distort`,
+  `Reality 4` = `21-Real4_constr`,
+  `Reality 5` = `22-Real5_simview`,
+  `Values 1` = `23-V1_objectivity`,
+  `Values 2` = `24-V2_personal`,
+  `Values 3` = `25-V3_neutral`,
+  `Values 4` = `26-V4_determining`,
+  `Values 5` = `27-V5_advocacy`,
+  `Values 6` = `28-V6_simview`,
+  `Reductionism 1` = `29-Red1_scale`,
+  `Reductionism 2` = `30-Red2_assembly`,
+  `Reductionism 3` = `31-Red3_emerg`,
+  `Reductionism 4` = `32-Red4_isolates`,
+  `Reductionism 5` = `33-Red5_envt`,
+  `Reductionism 6` = `34-Red6_simview`)
+  
+#Calculate means and sds for all the prompts
+
+means <- renamed %>% summarise_all(list(mean), na.rm=TRUE) 
+  
+sds <- renamed %>% summarise_all(list(sd), na.rm=TRUE) 
+
+#Graph the Methodology prompts which were found to have significant differences
+
+method_plot_grp_means <- means %>% dplyr::select(`Academic Family (resolved)`, `Methodology 1`, `Methodology 2`, `Methodology 3` ,`Methodology 4`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with("Methodology"), values_to = "Likert Score Aggregate Means")
+
+method_plot_grp_sds <- sds %>% dplyr::select(`Academic Family (resolved)`, `Methodology 1`, `Methodology 2`, `Methodology 3` ,`Methodology 4`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with("Methodology"), values_to = "Standard Deviations")
+
+method_plot_grp <- method_plot_grp_means %>% left_join(method_plot_grp_sds, by = c('Academic Family (resolved)', 'Prompt')) 
+
+method_plot_grp <- mutate(method_plot_grp, "Standard Error" = `Standard Deviations`/sqrt(266))
+
+method_plot <- ggplot(method_plot_grp, aes(x = `Prompt`, y=`Likert Score Aggregate Means`, fill=`Academic Family (resolved)`)) + 
+       geom_bar(stat="identity", position = 'dodge') +
+       geom_errorbar(aes(ymin = `Likert Score Aggregate Means` - 2*`Standard Error`, ymax = `Likert Score Aggregate Means` + 2*`Standard Error`), position=position_dodge(.9), width = 0.2) +
+       lightness(scale_fill_brewer(palette="Greys", direction = -1), delta(-15)) 
+method_plot
+
+
+#Graph the Reality prompts which were found to have significant differences
+
+reality_plot_grp_means <- means %>% dplyr::select(`Academic Family (resolved)`, `Reality 1`, `Reality 2`, `Reality 4`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with("Reality"), values_to = "Likert Score Aggregate Means")
+
+reality_plot_grp_sds <- sds %>% dplyr::select(`Academic Family (resolved)`, `Reality 1`, `Reality 2`, `Reality 4`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with("Reality"), values_to = "Standard Deviations")
+
+reality_plot_grp <- reality_plot_grp_means %>% left_join(reality_plot_grp_sds, by = c('Academic Family (resolved)', 'Prompt')) 
+
+reality_plot_grp <- mutate(reality_plot_grp, "Standard Error" = `Standard Deviations`/sqrt(266))
+
+reality_plot <- ggplot(reality_plot_grp, aes(x = `Prompt`, y=`Likert Score Aggregate Means`, fill=`Academic Family (resolved)`)) + 
+       geom_bar(stat="identity", position = 'dodge') +
+       geom_errorbar(aes(ymin = `Likert Score Aggregate Means` - 2*`Standard Error`, ymax = `Likert Score Aggregate Means` + 2*`Standard Error`), position=position_dodge(.9), width = 0.2) +
+       lightness(scale_fill_brewer(palette="Greys", direction = -1), delta(-15)) 
+reality_plot
+
+#Graph the remaining category prompts which were found to have significant differences
+
+remain_plot_grp_means <- means %>% dplyr::select(`Academic Family (resolved)`, `Confirmation 3`, `Values 3`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with(c("Confirmation", "Values")), values_to = "Likert Score Aggregate Means")
+
+remain_plot_grp_sds <- sds %>% dplyr::select(`Academic Family (resolved)`, `Confirmation 3`, `Values 3`) %>% pivot_longer(names_to = 'Prompt', cols = starts_with(c("Confirmation", "Values")), values_to = "Standard Deviations")
+
+remain_plot_grp <- remain_plot_grp_means %>% left_join(remain_plot_grp_sds, by = c('Academic Family (resolved)', 'Prompt')) 
+
+remain_plot_grp <- mutate(remain_plot_grp, "Standard Error" = `Standard Deviations`/sqrt(266))
+
+remain_plot <- ggplot(remain_plot_grp, aes(x = `Prompt`, y=`Likert Score Aggregate Means`, fill=`Academic Family (resolved)`)) + 
+       geom_bar(stat="identity", position = 'dodge') +
+       geom_errorbar(aes(ymin = `Likert Score Aggregate Means` - 2*`Standard Error`, ymax = `Likert Score Aggregate Means` + 2*`Standard Error`), position=position_dodge(.9), width = 0.2) +
+       lightness(scale_fill_brewer(palette="Greys", direction = -1), delta(-15)) 
+remain_plot
+
+
+```
+
+## Kruskall-Wallis Tests for each of the prompts
+
+Below is my code for the Kruskall-Wallis rank sum test for each of the 28 Scientific Toolbox prompts. After running these tests, I discovered that all 9 prompts which the original authors found to have statistically significant differences across disciplines (Methodology 1-4, Reality 1, 2, and 4, Confirmation 3 and Values 3) remained to have said differences in my reproduction, and all prompts deemed not significant by the original authors remained as such. While my values for the K-W tests were not exactly the same as the original authors' values, though they are very close, this is most likely due to the 13 additional responses in my dataset.
+
+```{r, message=FALSE, warning=FALSE, echo=TRUE}
+
+
+#MOTIVATION
+
+Motivation_1 <- kruskal.test(data$`01-M1_app` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Motivation_1
+
+Motivation_2 <- kruskal.test(data$`02-M2_XD` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Motivation_2
+
+Motivation_3 <- kruskal.test(data$`03-M3_basic` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Motivation_3
+
+Motivation_4 <- kruskal.test(data$`04-M4_imptce` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Motivation_4
+
+Motivation_5 <- kruskal.test(data$`05-M5_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Motivation_5 #simview
+
+#METHODOLOGY
+
+Methodology_1 <- kruskal.test(data$`06-Meth1_hypoth` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_1
+
+Methodology_2 <- kruskal.test(data$`07-Meth2_qt` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_2
+
+adjusted_M2 <- p.adjust(Methodology_2["p.value"], method = "holm", n = length(Methodology_2["p.value"]))
+adjusted_M2
+
+Methodology_3 <- kruskal.test(data$`08-Meth3_ql` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_3
+
+Methodology_4 <- kruskal.test(data$`09-Meth4_expt` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_4
+
+Methodology_5 <- kruskal.test(data$`10-Meth5_obs` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_5
+
+Methodology_6 <- kruskal.test(data$`11-Meth6_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Methodology_6 #simview
+
+#CONFIRMATION
+
+Confirmation_1 <- kruskal.test(data$`12-C1_validity` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_1
+
+Confirmation_2 <- kruskal.test(data$`13-C2_confirm` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_2
+
+Confirmation_3 <- kruskal.test(data$`14-C3_rep` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_3
+
+Confirmation_4 <- kruskal.test(data$`15-C4_unrep` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_4
+
+Confirmation_5 <- kruskal.test(data$`16-C5_uncert` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_5
+
+Confirmation_6 <- kruskal.test(data$`17-C6_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Confirmation_6 #simview
+
+#REALITY
+
+Reality_1 <- kruskal.test(data$`18-Real1_facts` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reality_1
+
+Reality_2 <- kruskal.test(data$`19-Real2_useful` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reality_2
+
+Reality_3 <- kruskal.test(data$`20-Real3_distort` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reality_3
+
+Reality_4 <- kruskal.test(data$`21-Real4_constr` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reality_4
+
+Reality_5 <- kruskal.test(data$`22-Real5_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reality_5 #simview
+
+#VALUES
+
+Values_1 <- kruskal.test(data$`23-V1_objectivity` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_1
+
+Values_2 <- kruskal.test(data$`24-V2_personal` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_2 #became significant...hm...
+
+Values_3 <- kruskal.test(data$`25-V3_neutral` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_3
+
+Values_4 <- kruskal.test(data$`26-V4_determining` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_4
+
+Values_5 <- kruskal.test(data$`27-V5_advocacy` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_5
+
+Values_6 <- kruskal.test(data$`28-V6_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Values_6 #simview
+
+#REDUCTIONISM
+
+Reductionism_1 <- kruskal.test(data$`29-Red1_scale` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_1
+
+Reductionism_2 <- kruskal.test(data$`30-Red2_assembly` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_2
+
+Reductionism_3 <- kruskal.test(data$`31-Red3_emerg` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_3
+
+Reductionism_4 <- kruskal.test(data$`32-Red4_isolates` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_4
+
+Reductionism_5 <- kruskal.test(data$`33-Red5_envt` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_5
+
+Reductionism_6 <- kruskal.test(data$`34-Red6_simview` ~ data$`Academic Family (resolved)`, data = data, na.action = na.omit)
+Reductionism_6 #simview
+
+
+
+```
+
+## Mann-Whitney-Wilcoxon Tests
+
+To complete my analysis as the original authors did, I ran Mann-Whitney-Wilcoxon tests on each of the 9 prompts that were found to be statistically significant, in order to tell where each of the differences lie. This is a pair-wise test that split each prompt into three pairs, comparing the means of Life Sciences, Physical Sciences and Mathematics, and Social and Behavioral Sciences across the nine prompts. My analysis revealed that the differences reside in the same places the original authors found them. 
+
+```{r}
+
+#Methodology 1
+
+x_meth1 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Methodology 1`
+
+y_meth1 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Methodology 1`
+
+z_meth1 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Methodology 1`
+
+MWW_meth1 <- wilcox.test(x_meth1, y_meth1, p.adjust.method = "holm")
+MWW_meth1
+
+MWW_meth1_2 <- wilcox.test(x_meth1, z_meth1, p.adjust.method = "holm")
+MWW_meth1_2
+
+MWW_meth_1_3 <-  wilcox.test(y_meth1, z_meth1, p.adjust.method = "holm")
+MWW_meth_1_3
+
+#Methodology 2
+
+x_meth2 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Methodology 2`
+
+y_meth2 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Methodology 2`
+
+z_meth2 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Methodology 2`
+
+MWW_meth2 <- wilcox.test(x_meth2, y_meth2, p.adjust.method = "holm")
+MWW_meth2
+
+MWW_meth2_2 <- wilcox.test(x_meth2, z_meth2, p.adjust.method = "holm")
+MWW_meth2_2
+
+MWW_meth_2_3 <-  wilcox.test(y_meth2, z_meth2, p.adjust.method = "holm")
+MWW_meth_2_3
+
+#Methodology 3
+
+x_meth3 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Methodology 3`
+
+y_meth3 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Methodology 3`
+
+z_meth3 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Methodology 3`
+
+MWW_meth3 <- wilcox.test(x_meth3, y_meth3, p.adjust.method = "holm")
+MWW_meth3
+
+MWW_meth3_2 <- wilcox.test(x_meth3, z_meth3, p.adjust.method = "holm")
+MWW_meth3_2
+
+MWW_meth_3_3 <-  wilcox.test(y_meth3, z_meth3, p.adjust.method = "holm")
+MWW_meth_3_3
+
+#Methodology 4
+
+x_meth4 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Methodology 4`
+
+y_meth4 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Methodology 4`
+
+z_meth4 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Methodology 4`
+
+MWW_meth4 <- wilcox.test(x_meth4, y_meth4, p.adjust.method = "holm")
+MWW_meth4
+
+MWW_meth4_2 <- wilcox.test(x_meth4, z_meth4, p.adjust.method = "holm")
+MWW_meth4_2
+
+MWW_meth_4_3 <-  wilcox.test(y_meth4, z_meth4, p.adjust.method = "holm")
+MWW_meth_4_3
+
+#Reality 1
+
+x_real1 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Reality 1`
+
+y_real1 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Reality 1`
+
+z_real1 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Reality 1`
+
+MWW_real1 <- wilcox.test(x_real1, y_real1, p.adjust.method = "holm")
+MWW_real1
+
+MWW_real1_2 <- wilcox.test(x_real1, z_real1, p.adjust.method = "holm")
+MWW_real1_2
+
+MWW_real1_3 <-  wilcox.test(y_real1, z_real1, p.adjust.method = "holm")
+MWW_real1_3
+
+#Reality 2
+
+x_real2 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Reality 2`
+
+y_real2 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Reality 2`
+
+z_real2 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Reality 2`
+
+MWW_real2 <- wilcox.test(x_real2, y_real2, p.adjust.method = "holm")
+MWW_real2
+
+MWW_real2_2 <- wilcox.test(x_real2, z_real2, p.adjust.method = "holm")
+MWW_real2_2
+
+MWW_real2_3 <-  wilcox.test(y_real2, z_real2, p.adjust.method = "holm")
+MWW_real2_3
+
+#Reality 4
+
+x_real4 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Reality 4`
+
+y_real4 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Reality 4`
+
+z_real4 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Reality 4`
+
+MWW_real4 <- wilcox.test(x_real4, y_real4, p.adjust.method = "holm")
+MWW_real4
+
+MWW_real4_2 <- wilcox.test(x_real4, z_real4, p.adjust.method = "holm")
+MWW_real4_2
+
+MWW_real4_3 <-  wilcox.test(y_real4, z_real4, p.adjust.method = "holm")
+MWW_real4_3
+
+#Confirmation 3
+
+x_conf3 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Confirmation 3`
+
+y_conf3 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Confirmation 3`
+
+z_conf3 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Confirmation 3`
+
+MWW_conf3 <- wilcox.test(x_conf3, y_conf3, p.adjust.method = "holm")
+MWW_conf3
+
+MWW_conf3_2 <- wilcox.test(x_conf3, z_conf3, p.adjust.method = "holm")
+MWW_conf3_2
+
+MWW_conf3_3 <-  wilcox.test(y_conf3, z_conf3, p.adjust.method = "holm")
+MWW_conf3_3
+
+#Values 3
+
+x_val3 <- renamed %>% filter(`Academic Family (resolved)` == 'Life Sciences') %>% .$`Values 3`
+
+y_val3 <- renamed %>% filter(`Academic Family (resolved)` == 'Social and Behavioral Sciences') %>% .$`Values 3`
+
+z_val3 <- renamed %>% filter(`Academic Family (resolved)` == 'Physical Sciences and Mathematics') %>% .$`Values 3`
+MWW_val3 <- wilcox.test(x_val3, y_val3, p.adjust.method = "holm")
+MWW_val3
+
+MWW_val3_2 <- wilcox.test(x_val3, z_val3, p.adjust.method = "holm")
+MWW_val3_2
+
+MWW_val3_3 <-  wilcox.test(y_val3, z_val3, p.adjust.method = "holm")
+MWW_val3_3
+
+
+```
+
+
+## Discussion
+
+### Summary of Reproduction Attempt
+
+This was a successful reproduction of the experiment. The primary result from my key analysis (the Kruskall-Wallis test) is that the 9 prompts the original authors found to have statistically significant differences across disciplines (Methodology 1-4, Reality 1, 2, and 4, Confirmation 3 and Values 3) all remained statistically significant, while all prompts that were originally found not statistically significant remained as such. Across these prompts, through utilization of the Mann-Whitney-Wilcoxon tests, it was found that overall, social and behavioral scientists tend to believe that full objectivity is not often possible, and the worldviews of the researchers should be taken into account. Physical and life scientists tended to hold more Popperian philosophical views about reproducibility and falsification. I was also able to successfully reproduce the bar graphs that were included in the original paper. Overall, this was a phenomenal learning experience and I think the original researchers did an incredible job with their work. Thanks for an awesome class!
+
+
+
